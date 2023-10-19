@@ -1,0 +1,5 @@
+node_modules
+dist
+coverage
+**/.cdk-*.out
+**/.serverless/**/*

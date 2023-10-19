@@ -1,0 +1,101 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "simple-import-sort",
+    "prettier",
+    "fp",
+    "deprecation",
+    "sort-destructure-keys"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:prettier/recommended",
+    "plugin:fp/recommended",
+    "plugin:deprecation/recommended"
+  ],
+  "ignorePatterns": ["*.json", "jest.config.ts"],
+  "rules": {
+    "@typescript-eslint/array-type": ["warn", { "default": "generic" }],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "default",
+        "format": ["PascalCase", "camelCase", "UPPER_CASE"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/prefer-interface": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-inferrable-types": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+    "@typescript-eslint/prefer-optional-chain": ["warn"],
+    "@typescript-eslint/consistent-type-assertions": ["warn"],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": true
+      }
+    ],
+    "@typescript-eslint/quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "import/no-default-export": "warn",
+    "import/no-unresolved": "off",
+    "import/order": "off",
+    "import/named": "off",
+    "simple-import-sort/imports": "warn",
+    "sort-destructure-keys/sort-destructure-keys": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*", "**/*.test.*"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "fp/no-unused-expression": "off",
+        "fp/no-nil": 0
+      }
+    },
+    {
+      "files": ["types/**/*.d.ts"],
+      "rules": {
+        "import/no-default-export": 0
+      }
+    }
+  ]
+}

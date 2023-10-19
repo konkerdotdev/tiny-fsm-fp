@@ -1,0 +1,77 @@
+{
+  "name": "@konker.dev/tiny-fsm-fp",
+  "version": "0.0.0",
+  "author": "Konrad Markus <mail@konker.dev>",
+  "description": "Small event library based on Effect-ts",
+  "license": "ISC",
+  "main": "dist/tiny-event.js",
+  "files": [
+    "dist/**/*",
+    "!dist/**/*.test.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/konkerdotdev/tiny-fsm-fp"
+  },
+  "keywords": [
+    "node",
+    "event",
+    "typescript",
+    "functional-programming",
+    "effect-ts"
+  ],
+  "packageManager": "pnpm@8",
+  "dependencies": {
+    "@effect/data": "^0.18.5",
+    "@effect/io": "^0.40.3",
+    "@effect/schema": "^0.36.5",
+    "@konker.dev/effect-ts-prelude": "latest",
+    "@konker.dev/tiny-event-fp": "latest",
+    "effect": "^2.0.0-next.34"
+  },
+  "devDependencies": {
+    "@effect/language-service": "^0.0.21",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "@typescript-eslint/typescript-estree": "^6.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-deprecation": "^2.0.0",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-sort-destructure-keys": "^1.5.0",
+    "gulp": "^4.0.2",
+    "husky": "^8.0.0",
+    "jest": "^29.7.0",
+    "madge": "^6.1.0",
+    "npx": "^10.2.2",
+    "prettier": "^3.0.3",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "staticFiles": [],
+  "scripts": {
+    "prepare": "husky install",
+    "test": "jest --no-cache -w 4",
+    "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "build": "pnpm run clean && tsc && gulp copy-static",
+    "circular-check": "madge --extensions ts --circular --no-color --no-spinner --warning src",
+    "eslint-check": "eslint --max-warnings=0 '**/*.{ts,js,json}'",
+    "eslint-fix": "npx eslint --fix||true",
+    "prettier-check": "npx prettier --check --ignore-path .gitignore --ignore-path .prettierignore '**/*.{css,html,js,ts,json,md,yaml,yml}'",
+    "prettier-fix": "pnpm run prettier-check --write",
+    "lint-check": "pnpm run eslint-check && pnpm run prettier-check && pnpm run circular-check",
+    "lint-fix": "pnpm run eslint-fix && pnpm run prettier-fix",
+    "pre-push": "pnpm run lint-check && pnpm run typecheck",
+    "ci": "pnpm run lint-check && pnpm run typecheck && pnpm run test && pnpm run build",
+    "cd": "pnpm run build && pnpm publish --access public"
+  }
+}

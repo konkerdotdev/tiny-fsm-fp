@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'package.json'
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.PRIVATE_NPM_TOKEN }}
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: CD
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: '8'
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run Checks
+        run: pnpm run ci
+      - name: Deploy to Registry
+        run: pnpm run cd
