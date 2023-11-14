@@ -1,6 +1,6 @@
 import * as P from '@konker.dev/effect-ts-prelude';
 
-import * as unit from './tiny-fsm-fp';
+import * as unit from './index';
 
 export type AppState = 'ST_IDLE' | 'ST_5C' | 'ST_10C' | 'ST_15C' | 'ST_20C' | 'ST_VEND' | 'ST_CHANGE' | 'ST_ERROR';
 export type AppEvent = 'EV_ENTER_5C' | 'EV_ENTER_10C' | 'EV_ENTER_15C' | 'EV_ENTER_20C' | 'EV_CHOOSE' | 'EV_ANY';
