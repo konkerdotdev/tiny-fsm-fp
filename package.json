@@ -1,6 +1,6 @@
 {
   "name": "@konker.dev/tiny-fsm-fp",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Konrad Markus <mail@konker.dev>",
   "description": "Small event library based on Effect-ts",
   "license": "ISC",
