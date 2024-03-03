@@ -34,7 +34,7 @@ function executeTransition<S extends string, E extends string, A>(
   stateMachine: TinyStateMachine<S, E, A>,
   toState: S,
   eventData?: A
-): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> {
+): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> {
   return P.pipe(
     P.Effect.succeed(stateMachine),
     P.Effect.tap((stateMachine) =>
@@ -53,7 +53,7 @@ function executeTransition<S extends string, E extends string, A>(
 //---------------------------------------------------------------------------
 export function createTinyStateMachine<S extends string, E extends string, A>(
   startingState: S
-): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> {
+): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> {
   return P.pipe(
     P.Effect.succeed({
       startingState,
@@ -98,7 +98,7 @@ export function createTinyStateMachine<S extends string, E extends string, A>(
 
 export const transition =
   <S extends string, E extends string, A>(fromState: S, eventType: E, toState: S) =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> =>
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> =>
     P.pipe(
       P.Effect.succeed(stateMachine),
       P.Effect.tap((stateMachine) => P.Effect.succeed(stateMachine.stateMap.set(fsmKey(fromState, eventType), toState)))
@@ -106,7 +106,7 @@ export const transition =
 
 export const trigger =
   <S extends string, E extends string, A>(event: E, eventData?: A) =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> => {
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> => {
     return P.pipe(
       P.Effect.succeed(stateMachine),
       // Notify listeners
@@ -120,13 +120,13 @@ export const trigger =
 
 export const restart =
   <S extends string, E extends string, A>() =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> => {
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> => {
     return executeTransition(stateMachine, stateMachine.startingState);
   };
 
 export const onEvent =
   <S extends string, E extends string, A>(event: E, listener: TinyEventListener<E, A>) =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> =>
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> =>
     P.pipe(
       P.Effect.succeed(stateMachine),
       P.Effect.tap((stateMachine) => P.pipe(stateMachine.onEventDispatcher, TE.addListener(event, listener)))
@@ -134,7 +134,7 @@ export const onEvent =
 
 export const onEnterState =
   <S extends string, E extends string, A>(state: S, listener: TinyEventListener<S, A>) =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> =>
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> =>
     P.pipe(
       P.Effect.succeed(stateMachine),
       P.Effect.tap((stateMachine) => P.pipe(stateMachine.onEnterStateEventDispatcher, TE.addListener(state, listener)))
@@ -142,10 +142,8 @@ export const onEnterState =
 
 export const onExitState =
   <S extends string, E extends string, A>(state: S, listener: TinyEventListener<S, A>) =>
-  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<never, Error, TinyStateMachine<S, E, A>> =>
+  (stateMachine: TinyStateMachine<S, E, A>): P.Effect.Effect<TinyStateMachine<S, E, A>, Error> =>
     P.pipe(
       P.Effect.succeed(stateMachine),
-      (x) => x,
-      P.Effect.tap((stateMachine) => P.pipe(stateMachine.onExitStateEventDispatcher, TE.addListener(state, listener))),
-      (x) => x
+      P.Effect.tap((stateMachine) => P.pipe(stateMachine.onExitStateEventDispatcher, TE.addListener(state, listener)))
     );
