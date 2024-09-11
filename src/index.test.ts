@@ -6,9 +6,9 @@ export type AppState = 'ST_IDLE' | 'ST_5C' | 'ST_10C' | 'ST_15C' | 'ST_20C' | 'S
 export type AppEvent = 'EV_ENTER_5C' | 'EV_ENTER_10C' | 'EV_ENTER_15C' | 'EV_ENTER_20C' | 'EV_CHOOSE' | 'EV_ANY';
 
 describe('TinyFsm', () => {
-  const l1 = jest.fn((_t: AppState, _d?: string) => P.Effect.unit);
-  const l2 = jest.fn((_t: AppState, _d?: string) => P.Effect.unit);
-  const l3 = jest.fn((_t: AppEvent, _d?: string) => P.Effect.unit);
+  const l1 = jest.fn((_t: AppState, _d?: string) => P.Effect.void);
+  const l2 = jest.fn((_t: AppState, _d?: string) => P.Effect.void);
+  const l3 = jest.fn((_t: AppEvent, _d?: string) => P.Effect.void);
 
   it('should function as expected', async () => {
     const fsm = unit.createTinyStateMachine<AppState, AppEvent, string>('ST_IDLE');
